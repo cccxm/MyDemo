@@ -1,0 +1,7 @@
+/build
+*.pro
+*.iml
+*.properties
+/gradle
+gradlew
+*.bat
