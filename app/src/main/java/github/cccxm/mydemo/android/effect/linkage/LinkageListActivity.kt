@@ -1,4 +1,4 @@
-package github.cccxm.mydemo.android.material.bar
+package github.cccxm.mydemo.android.effect.linkage
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,14 +8,15 @@ import github.cccxm.mydemo.utils.item
 import github.cccxm.mydemo.utils.simpleStringItemAdapter
 import org.jetbrains.anko.*
 
-class AppBarListActivity : AppCompatActivity() {
-    private val ui = AppBarListUI()
+class LinkageListActivity : AppCompatActivity() {
+
+    private val ui = LinkageListUI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ui.setContentView(this))
         val actionBar = supportActionBar ?: return
-        actionBar.title = "App Bar"
+        actionBar.title = "linkage"
         actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -29,14 +30,15 @@ class AppBarListActivity : AppCompatActivity() {
     }
 }
 
-private class AppBarListUI : AnkoComponent<AppBarListActivity> {
-    override fun createView(ui: AnkoContext<AppBarListActivity>): View = with(ui) {
+private class LinkageListUI : AnkoComponent<LinkageListActivity> {
+    override fun createView(ui: AnkoContext<LinkageListActivity>): View = with(ui) {
         linearLayout {
             lparams(matchParent, matchParent)
             listView {
                 lparams(matchParent, matchParent)
                 simpleStringItemAdapter {
-                    item("Simple") { startActivity<AppBarSimpleActivity>() }
+                    item("ScrollingActivity") { startActivity<ScrollingActivity>() }
+                    item("ListView联动ActionBar") { startActivity<ListPushBarActivity>() }
                 }
             }
         }

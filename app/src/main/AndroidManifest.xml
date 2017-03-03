@@ -19,7 +19,15 @@
         <activity android:name=".android.view.circle.CardViewCircleActivity" />
         <activity android:name=".android.effect.animation.AnimationListActivity" />
         <activity android:name=".android.material.bar.AppBarListActivity" />
-        <activity android:name=".android.material.bar.AppBarSimpleActivity"></activity>
+        <activity android:name=".android.material.bar.AppBarSimpleActivity" />
+        <activity android:name=".android.effect.linkage.LinkageListActivity" />
+        <activity
+            android:name=".android.effect.linkage.ListPushBarActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".android.effect.linkage.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
