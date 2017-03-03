@@ -16,7 +16,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".android.view.circle.CircleListActivity" />
-        <activity android:name=".android.view.circle.CardViewCircleActivity"></activity>
+        <activity android:name=".android.view.circle.CardViewCircleActivity" />
+        <activity android:name=".android.effect.animation.AnimationListActivity" />
+        <activity android:name=".android.material.bar.AppBarListActivity" />
+        <activity android:name=".android.material.bar.AppBarSimpleActivity"></activity>
     </application>
 
 </manifest>
