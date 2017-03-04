@@ -8,7 +8,7 @@ import github.cccxm.mydemo.utils.simpleCardAdapter
 import kotlinx.android.synthetic.main.activity_list_push.*
 
 /**
- * 该Demo展示的是ListView上滑时推动ActionBar回收隐藏
+ * 该Demo展示的是ListView上滑时推动ActionBar回收，该示例的详细说明在XML文件中
  */
 class ListPushBarActivity : AppCompatActivity() {
 

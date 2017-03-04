@@ -38,7 +38,8 @@ private class LinkageListUI : AnkoComponent<LinkageListActivity> {
                 lparams(matchParent, matchParent)
                 simpleStringItemAdapter {
                     item("ScrollingActivity") { startActivity<ScrollingActivity>() }
-                    item("ListView联动ActionBar") { startActivity<ListPushBarActivity>() }
+                    item("RecyclerView联动ActionBar") { startActivity<ListPushBarActivity>() }
+                    item("RecyclerView顶开ActionBar") {}
                 }
             }
         }
