@@ -10,6 +10,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
+        android:background="@android:color/holo_blue_dark"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
+            app:contentScrim="@android:color/holo_blue_bright"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <android.support.v7.widget.Toolbar
@@ -41,7 +42,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycle_effect_linkage_push_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="ifContentScrolls" />
 
     </android.support.v4.widget.NestedScrollView>
 
