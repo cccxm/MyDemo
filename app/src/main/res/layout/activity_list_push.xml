@@ -21,6 +21,19 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/holo_blue_bright"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <!--
+app:layout_scrollFlags
+属性里面必须至少启用scroll这个flag，这样这个view才会滚动出屏幕，否则它将一直固定在顶部。
+
+可以使用的其他flag有：
+
+1,enterAlways: 一旦向上滚动这个view就可见。
+2,enterAlwaysCollapsed: 顾名思义，这个flag定义的是何时进入（已经消失之后何时再次显示）。
+        假设你定义了一个最小高度（minHeight）同时enterAlways也定义了，那么view将在到达这个最小高度的时候开始显示，并且从这个时候开始慢慢展开，当滚动到顶部的时候展开完。
+3,exitUntilCollapsed: 同样顾名思义，这个flag时定义何时退出，当你定义了一个minHeight，这个view将在滚动到达这个最小高度的时候消失。
+
+记住，要把带有scroll flag的view放在前面，这样收回的view才能让正常退出，而固定的view继续留在顶部。
+            -->
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
