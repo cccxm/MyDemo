@@ -4,17 +4,21 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import com.mapbox.mapboxsdk.MapboxAccountManager
+import com.mapbox.mapboxsdk.constants.Style
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import github.cccxm.mydemo.R
+import github.cccxm.mydemo.utils.MenuManager
+import github.cccxm.mydemo.utils.menuView
 import github.cccxm.mydemo.utils.string
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.toolbar
 import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.design.coordinatorLayout
 
 private interface Contract {
     interface View {
@@ -45,6 +49,8 @@ private interface Contract {
 class MapBoxActivity : AppCompatActivity(), Contract.Presenter {
 
     private val ui = MapBoxUI()
+    private lateinit var mMapBoxMap: MapboxMap
+    private lateinit var mMenuManager: MenuManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +60,26 @@ class MapBoxActivity : AppCompatActivity(), Contract.Presenter {
         ui.prepare(savedInstanceState)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        mMenuManager = menuView(menu) {
+            group("地图风格") {
+                item("默认") { mMapBoxMap.styleUrl = Style.MAPBOX_STREETS }
+                item("白色") { mMapBoxMap.styleUrl = Style.LIGHT }
+                item("黑色") { mMapBoxMap.styleUrl = Style.DARK }
+                item("卫星视图") { mMapBoxMap.styleUrl = Style.SATELLITE }
+                item("卫星视图街道") { mMapBoxMap.styleUrl = Style.SATELLITE_STREETS }
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        mMenuManager.onclick(item)
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun mapPrepared(map: MapboxMap) {
-        //TODO
+        mMapBoxMap = map
     }
 
     override fun onResume() {
