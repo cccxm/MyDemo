@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
+import github.cccxm.mydemo.android.map.mapbox.MapBoxActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
 import github.cccxm.mydemo.utils.group
@@ -39,6 +40,9 @@ private class MainUI : AnkoComponent<MainActivity> {
                     }
                     group("View") {
                         item("圆形控件") { startActivity<CircleListActivity>() }
+                    }
+                    group("地图") {
+                        item("MapBox") { startActivity<MapBoxActivity>() }
                     }
                 }
             }

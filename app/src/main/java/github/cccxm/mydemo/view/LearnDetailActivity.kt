@@ -8,7 +8,8 @@ import org.jetbrains.anko.*
 
 private interface Contract {
     interface View {
-        fun showWeb(detail: String)
+        fun showWeb(url: String)
+        fun showMarkdown(markdown: String)
     }
 }
 
@@ -19,7 +20,9 @@ class LearnDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(ui.setContentView(this))
         val markdown = intent.extras.getString("markdown", "")
-        ui.showWeb(markdown)
+        if (markdown.isNotBlank()) ui.showMarkdown(markdown)
+        val url = intent.extras.getString("url", "")
+        if (url.isNotBlank()) ui.showWeb(url)
     }
 }
 
@@ -35,7 +38,11 @@ private class LearnDetailUI : AnkoComponent<LearnDetailActivity>, Contract.View 
         }
     }
 
-    override fun showWeb(detail: String) {
-        mWebView.loadData(detail, "http/html", "utf-8")
+    override fun showWeb(url: String) {
+        mWebView.loadUrl(url)
+    }
+
+    override fun showMarkdown(markdown: String) {
+        mWebView.loadData(markdown, "http/html", "utf-8")
     }
 }
