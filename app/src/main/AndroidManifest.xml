@@ -28,7 +28,9 @@
             android:name=".android.effect.linkage.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".android.effect.linkage.ListHideBarActivity"></activity>
+        <activity
+            android:name=".android.effect.linkage.ListHideBarActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
