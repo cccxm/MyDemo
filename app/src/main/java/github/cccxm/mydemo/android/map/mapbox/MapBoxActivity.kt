@@ -1,63 +1,115 @@
 package github.cccxm.mydemo.android.map.mapbox
 
 import android.graphics.Color
+import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.LinearLayout
 import com.mapbox.mapboxsdk.MapboxAccountManager
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.constants.MyLocationTracking
 import com.mapbox.mapboxsdk.constants.Style
-import com.mapbox.mapboxsdk.maps.MapView
+import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.location.LocationListener
+import com.mapbox.mapboxsdk.location.LocationServices
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import github.cccxm.mydemo.R
-import github.cccxm.mydemo.utils.MenuManager
-import github.cccxm.mydemo.utils.menuView
-import github.cccxm.mydemo.utils.string
-import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.toolbar
-import org.jetbrains.anko.design.appBarLayout
+import github.cccxm.mydemo.utils.*
+import kotlinx.android.synthetic.main.activity_map_box.*
+import org.jetbrains.anko.imageResource
+import org.jetbrains.anko.onClick
 
-private interface Contract {
-    interface View {
 
-        fun initActionBar(activity: AppCompatActivity)
-        /**
-         * 准备加载地图信息，加载完毕后会回调 P:mapPrepared
-         */
-        fun prepare(savedInstanceState: Bundle?)
-
-        fun onResume()
-        fun onPause()
-        fun onSaveInstanceState(state: Bundle)
-        fun onLowMemory()
-        fun onDestroy()
-    }
-
-    interface Presenter {
-        /**
-         * 回调：当地图准备完毕时
-         */
-        fun mapPrepared(map: MapboxMap)
-    }
-
-    interface Model
-}
-
-class MapBoxActivity : AppCompatActivity(), Contract.Presenter {
-
-    private val ui = MapBoxUI()
+class MapBoxActivity : AppCompatActivity() {
     private lateinit var mMapBoxMap: MapboxMap
     private lateinit var mMenuManager: MenuManager
+    private lateinit var mLocationService: LocationServices
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapboxAccountManager.start(this, string(R.string.mapbox_token))
-        setContentView(ui.setContentView(this))
-        ui.initActionBar(this)
-        ui.prepare(savedInstanceState)
+        setContentView(R.layout.activity_map_box)
+        initActionBar()
+        prepare(savedInstanceState)
+        registerListener()
+    }
+
+    /**
+     * 给控件注册监听
+     */
+    private fun registerListener() {
+        fab_mapview_location.onClick {
+            if (!mMapBoxMap.isMyLocationEnabled) {
+                locationPermission { enableLocation(it) }
+            } else {
+                enableLocation(false)
+            }
+        }
+    }
+
+    /**
+     * 初始化ActionBar
+     */
+    private fun initActionBar() {
+        toolbar_map_box.title = "MapBox"
+        setSupportActionBar(toolbar_map_box)
+        val actionBar = supportActionBar ?: return
+        actionBar.setDisplayHomeAsUpEnabled(true)
+        toolbar_map_box.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    /**
+     * 初始化MapView，初始化完毕时回调 onMapPrepared
+     */
+    private fun prepare(savedInstanceState: Bundle?) {
+        mapbox_mapview.onCreate(savedInstanceState)
+        mapbox_mapview.getMapAsync { onMapPrepared(it) }
+    }
+
+    /**
+     * 地图初始化完毕时回调，并进行定位
+     */
+    private fun onMapPrepared(map: MapboxMap) {
+        mMapBoxMap = map
+        mLocationService = LocationServices.getLocationServices(this)
+        initMyLocationStyle()
+        locationPermission { enableLocation(it) }
+    }
+
+    private fun enableLocation(enable: Boolean) {
+        if (enable) {
+            val lastLocation = mLocationService.lastLocation
+            if (lastLocation != null) {
+                mMapBoxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lastLocation), 16f))
+            }
+            mLocationService.addLocationListener(object : LocationListener {
+                override fun onLocationChanged(location: Location?) {
+                    if (location != null) {
+                        mMapBoxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lastLocation), 16f))
+                        mLocationService.removeLocationListener(this)
+                    }
+                }
+            })
+            mMapBoxMap.isMyLocationEnabled = true
+            fab_mapview_location.imageResource = R.drawable.ic_location_disabled_24dp
+        } else {
+            mMapBoxMap.isMyLocationEnabled = false
+            fab_mapview_location.imageResource = R.drawable.ic_my_location_24dp
+        }
+    }
+
+    /**
+     * 地图上显示我的位置时的样式
+     */
+    private fun initMyLocationStyle() {
+        with(mMapBoxMap) {
+            trackingSettings.myLocationTrackingMode = MyLocationTracking.TRACKING_FOLLOW
+            trackingSettings.setDismissAllTrackingOnGesture(true) //是否允许手势移动坐标点
+            myLocationViewSettings.setPadding(0, 0, 0, 0)
+            myLocationViewSettings.foregroundTintColor = Color.parseColor("#56B881")
+            myLocationViewSettings.accuracyTintColor = Color.parseColor("#FBB03B")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,102 +125,38 @@ class MapBoxActivity : AppCompatActivity(), Contract.Presenter {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         mMenuManager.onclick(item)
         return super.onOptionsItemSelected(item)
     }
 
-    override fun mapPrepared(map: MapboxMap) {
-        mMapBoxMap = map
-    }
-
     override fun onResume() {
         super.onResume()
-        ui.onResume()
+        mapbox_mapview.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        ui.onPause()
+        mapbox_mapview.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        ui.onSaveInstanceState(outState)
+        mapbox_mapview.onSaveInstanceState(outState)
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        ui.onLowMemory()
+        mapbox_mapview.onLowMemory()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        ui.onDestroy()
-    }
-}
-
-private class MapBoxUI : AnkoComponent<MapBoxActivity>, Contract.View {
-    private lateinit var mMapView: MapView
-    private lateinit var mToolbar: Toolbar
-    private lateinit var mPresenter: Contract.Presenter
-
-    override fun createView(ui: AnkoContext<MapBoxActivity>): View = with(ui) {
-        mPresenter = ui.owner
-        linearLayout root@ {
-            lparams(matchParent, matchParent) {
-                fitsSystemWindows = true
-                orientation = LinearLayout.VERTICAL
-            }
-            appBarLayout(theme = R.style.AppTheme_AppBarOverlay) {
-                lparams(width = matchParent, height = dimen(R.dimen.tool_bar_height)) {
-                    fitsSystemWindows = true
-                    backgroundColor = Color.parseColor("#ffff8800")
-                }
-                mToolbar = toolbar(theme = R.style.AppTheme_PopupOverlay) {
-                    lparams(matchParent, matchParent)
-                }
-            }
-            mMapView = with(MapView(ui.ctx)) {
-                this@root.addView(this)
-                lparams(matchParent, matchParent)
-                this
-            }
-        }
-    }
-
-    override fun initActionBar(activity: AppCompatActivity) {
-        with(activity) {
-            mToolbar.title = "MapBox"
-            setSupportActionBar(mToolbar)
-            val actionBar = supportActionBar ?: return
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            mToolbar.setNavigationOnClickListener { onBackPressed() }
-        }
-    }
-
-    override fun prepare(savedInstanceState: Bundle?) {
-        mMapView.onCreate(savedInstanceState)
-        mMapView.getMapAsync { mPresenter.mapPrepared(it) }
-    }
-
-    override fun onResume() {
-        mMapView.onResume()
-    }
-
-    override fun onPause() {
-        mMapView.onPause()
-    }
-
-    override fun onSaveInstanceState(state: Bundle) {
-        mMapView.onSaveInstanceState(state)
-    }
-
-    override fun onLowMemory() {
-        mMapView.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        mMapView.onDestroy()
+        mapbox_mapview.onDestroy()
     }
 }
