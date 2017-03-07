@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.mapbox.mapboxsdk.MapboxAccountManager
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
+import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.constants.MyLocationTracking
 import com.mapbox.mapboxsdk.constants.Style
@@ -14,10 +17,12 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationListener
 import com.mapbox.mapboxsdk.location.LocationServices
 import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.services.geocoding.v5.GeocodingCriteria
 import github.cccxm.mydemo.R
 import github.cccxm.mydemo.utils.*
 import kotlinx.android.synthetic.main.activity_map_box.*
 import org.jetbrains.anko.imageResource
+import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.onClick
 
 
@@ -46,6 +51,25 @@ class MapBoxActivity : AppCompatActivity() {
                 enableLocation(false)
             }
         }
+        map_box_search.setAccessToken(MapboxAccountManager.getInstance().accessToken)
+        map_box_search.setType(GeocodingCriteria.TYPE_POI)
+        map_box_search.setOnFeatureListener {
+            val position = it.asPosition()
+            inputMethodManager.hideSoftInputFromWindow(map_box_search.applicationWindowToken, 0)
+            updateMap(it.text, position.latitude, position.longitude)
+        }
+    }
+
+    /**
+     * 更新地图显示的位置
+     */
+    private fun updateMap(tag: String, latitude: Double, longitude: Double) {
+        mMapBoxMap.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title(tag))
+        val cameraPosition = CameraPosition.Builder()
+                .target(LatLng(latitude, longitude))
+                .zoom(15.0)
+                .build()
+        mMapBoxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 5000, null)
     }
 
     /**

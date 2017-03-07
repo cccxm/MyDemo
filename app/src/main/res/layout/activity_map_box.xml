@@ -11,6 +11,7 @@
         android:id="@+id/mapbox_mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         mapbox:style_url="@string/style_mapbox_streets" />
 
     <android.support.design.widget.FloatingActionButton
@@ -27,9 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#ffff8800"
-        android:elevation="5dp"
+        android:elevation="10dp"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="5dp">
+        app:elevation="10dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_map_box"
@@ -40,5 +41,24 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <com.mapbox.services.android.geocoder.ui.GeocoderAutoCompleteView
+        android:id="@+id/map_box_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="47dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="6dp"
+        android:background="@android:color/white"
+        android:elevation="12dp"
+        android:hint="Search Location"
+        android:textColorHint="#aaa"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="@android:color/black" />
 
 </android.support.design.widget.CoordinatorLayout>

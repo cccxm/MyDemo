@@ -32,6 +32,7 @@ dependencies {
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.2@aar'){
         transitive=true
     }
+    compile "com.mapbox.mapboxsdk:mapbox-android-services:$map_box_version"
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-sdk19:$anko_version"
