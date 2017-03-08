@@ -20,6 +20,7 @@ import com.mapbox.services.geocoding.v5.GeocodingCriteria
 import github.cccxm.mydemo.R
 import github.cccxm.mydemo.utils.*
 import kotlinx.android.synthetic.main.activity_map_box.*
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.inputMethodManager
 import org.jetbrains.anko.onClick
@@ -37,6 +38,16 @@ class MapBoxActivity : AppCompatActivity() {
         initActionBar()
         prepare(savedInstanceState)
         registerListener()
+        locationPermission { granted ->
+            logger(granted)
+            if (granted) {
+                // do some things
+            } else {
+                alert(title = "权限提醒", message = "该应用需要使用您的位置，您可以在设置中打开它") {
+                    onCancel { finish() }
+                }
+            }
+        }
     }
 
     /**
@@ -97,7 +108,7 @@ class MapBoxActivity : AppCompatActivity() {
         mMapBoxMap = map
         mLocationService = LocationServices.getLocationServices(this)
         initMyLocationStyle()
-        locationPermission ("开启定位权限才能更好的使用地图") { enableLocation(it) }
+        locationPermission { enableLocation(it) }
     }
 
     private fun enableLocation(enable: Boolean) {
@@ -149,7 +160,7 @@ class MapBoxActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        PermissionManager.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
+        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
