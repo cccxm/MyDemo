@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.mapbox.mapboxsdk.MapboxAccountManager
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -98,7 +97,7 @@ class MapBoxActivity : AppCompatActivity() {
         mMapBoxMap = map
         mLocationService = LocationServices.getLocationServices(this)
         initMyLocationStyle()
-        locationPermission { enableLocation(it) }
+        locationPermission ("开启定位权限才能更好的使用地图") { enableLocation(it) }
     }
 
     private fun enableLocation(enable: Boolean) {
@@ -150,7 +149,7 @@ class MapBoxActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionManager.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
