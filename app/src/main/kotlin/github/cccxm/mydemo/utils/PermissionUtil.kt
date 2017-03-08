@@ -20,11 +20,19 @@ object PermissionManager {
     fun onRequestPermissionsResult(activity: Activity, requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (permissionList.containsKey(requestCode)) {
             val granted = permissionList.remove(requestCode) ?: return
-            val result = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            granted.granted.invoke(result)
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[0])) {
-                if (granted.message != null) activity.alert(title = "权限说明", message = granted.message).show()
-            }
+            val isTip = ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[0])
+            val isDenied = grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED
+            if (isDenied) {
+                if (isTip) {
+                    val code = ++permissionCode
+                    PermissionManager.permissionList[requestCode] = granted
+                    ActivityCompat.requestPermissions(activity, permissions, code)
+                } else {
+                    granted.granted.invoke(false)
+                    if (granted.message != null) activity.alert(message = granted.message, title = "权限提醒").show()
+                }
+            } else
+                granted.granted.invoke(true)
         }
     }
 }
