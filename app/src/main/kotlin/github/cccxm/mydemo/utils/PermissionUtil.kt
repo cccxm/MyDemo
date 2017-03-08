@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import java.util.*
 
 /**
  * Created by
@@ -18,14 +19,9 @@ object PermissionManager {
     val permissionList = HashMap<Int, _Permission>()
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (permissionList.containsKey(requestCode)) {
+            logger(Arrays.toString(grantResults)) //TODO
             val permission = permissionList.remove(requestCode) ?: return
-            for (res in grantResults) {
-                if (res != PackageManager.PERMISSION_GRANTED) {
-                    permission.granted(false)
-                    return
-                }
-            }
-            permission.granted(true)
+            permission.granted(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
         }
     }
 }
@@ -34,9 +30,9 @@ object PermissionManager {
  * 申请定位权限
  */
 fun Activity.locationPermission(granted: (Boolean) -> Unit) {
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) == PackageManager.PERMISSION_GRANTED)
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) == PackageManager.PERMISSION_GRANTED) {
         granted(true)
-    else {
+    } else {
         val requestCode = ++permissionCode
         PermissionManager.permissionList[requestCode] = _Permission(granted)
         ActivityCompat.requestPermissions(this, arrayOf(

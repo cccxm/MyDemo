@@ -41,7 +41,7 @@ class MapBoxActivity : AppCompatActivity() {
         locationPermission { granted ->
             logger(granted)
             if (granted) {
-                // do some things
+                // do some things TODO
             } else {
                 alert(title = "权限提醒", message = "该应用需要使用您的位置，您可以在设置中打开它") {
                     onCancel { finish() }
