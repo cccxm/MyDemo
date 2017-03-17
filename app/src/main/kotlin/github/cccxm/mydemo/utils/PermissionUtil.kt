@@ -1,10 +1,14 @@
 package github.cccxm.mydemo.utils
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import org.jetbrains.anko.locationManager
 import java.util.*
 
 /**
@@ -16,10 +20,11 @@ private var permissionCode = 0
 data class _Permission(val granted: (Boolean) -> Unit)
 
 object PermissionManager {
+    @SuppressLint("UseSparseArrays")
     val permissionList = HashMap<Int, _Permission>()
+
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (permissionList.containsKey(requestCode)) {
-            logger(Arrays.toString(grantResults)) //TODO
             val permission = permissionList.remove(requestCode) ?: return
             permission.granted(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
         }
@@ -31,7 +36,11 @@ object PermissionManager {
  */
 fun Activity.locationPermission(granted: (Boolean) -> Unit) {
     if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) == PackageManager.PERMISSION_GRANTED) {
-        granted(true)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            granted(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        } else {
+            granted(true)
+        }
     } else {
         val requestCode = ++permissionCode
         PermissionManager.permissionList[requestCode] = _Permission(granted)
