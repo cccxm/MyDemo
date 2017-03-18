@@ -71,13 +71,13 @@ fun _TagFlowLayout.simpleStringAdapter(init: _TagSimpleStringAdapter.() -> Unit)
 }
 
 fun <T : AppCompatActivity> AnkoContext<T>.tagFlowLayout(init: _TagFlowLayout.() -> Unit): TagFlowLayout {
-    val layout = _TagFlowLayout(ctx)
-    layout.init()
-    return layout
+    return ctx.tagFlowLayout(init)
 }
 
 fun ViewGroup.tagFlowLayout(init: _TagFlowLayout.() -> Unit): TagFlowLayout {
-    return context.tagFlowLayout(init)
+    val view = context.tagFlowLayout(init)
+    addView(view)
+    return view
 }
 
 fun Context.tagFlowLayout(init: _TagFlowLayout.() -> Unit): TagFlowLayout {
