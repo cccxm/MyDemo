@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 
         <activity android:name=".android.view.circle.CircleListActivity" />
@@ -40,7 +41,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.LearnDetailActivity" />
         <activity
-            android:name=".android.map.mapbox.MapBoxActivity"
+            android:name=".android.extension.mapbox.MapBoxActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".android.layout.flow.FlowListActivity" />
+        <activity
+            android:name=".android.layout.flow.StaticTagActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

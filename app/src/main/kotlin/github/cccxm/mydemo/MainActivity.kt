@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
-import github.cccxm.mydemo.android.map.mapbox.MapBoxActivity
+import github.cccxm.mydemo.android.extension.mapbox.MapBoxActivity
+import github.cccxm.mydemo.android.layout.flow.FlowListActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
 import github.cccxm.mydemo.utils.group
@@ -42,6 +43,9 @@ private class MainUI : AnkoComponent<MainActivity> {
                     group("View") {
                         item("圆形控件") { startActivity<CircleListActivity>() }
                         item("对话框")
+                    }
+                    group("Layout") {
+                        item("FlowLayout") { startActivity<FlowListActivity>() }
                     }
                     group("数据操作") {
                         item("网络请求")

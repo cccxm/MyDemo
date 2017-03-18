@@ -1,4 +1,4 @@
-package github.cccxm.mydemo.android.map.mapbox
+package github.cccxm.mydemo.android.extension.mapbox
 
 import android.graphics.Color
 import android.location.Location
