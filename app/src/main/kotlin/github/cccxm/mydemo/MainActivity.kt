@@ -33,6 +33,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                 simpleStringGroupAdapter {
                     group("Material Design") {
                         item("App Bar") { startActivity<AppBarListActivity>() }
+                        item("Settings")
                     }
                     group("特效") {
                         item("动画") { startActivity<AnimationListActivity>() }
@@ -40,9 +41,31 @@ private class MainUI : AnkoComponent<MainActivity> {
                     }
                     group("View") {
                         item("圆形控件") { startActivity<CircleListActivity>() }
+                        item("对话框")
                     }
-                    group("地图") {
+                    group("数据操作") {
+                        item("网络请求")
+                        item("数据库")
+                        item("联系人")
+                    }
+                    group("Android通信机制") {
+                        item("进程内通信")
+                        item("AIDL通信")
+                        item("Remote View")
+                    }
+                    group("NDK") {
+                        item("OpenGL ES")
+                    }
+                    group("系统组件") {
+                        item("打电话")
+                        item("发短信")
+                        item("打开浏览器")
+                        item("系统分享")
+                        item("发送邮件")
+                    }
+                    group("我的扩展") {
                         item("MapBox") { startActivity<MapBoxActivity>() }
+                        item("CrazyPlatte")
                     }
                 }
             }
