@@ -47,6 +47,12 @@
         <activity
             android:name=".android.layout.flow.StaticTagActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".android.data.net.NetRequestActivity" />
+        <activity
+            android:name=".android.data.net.ServiceDownloadActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".android.data.net.BackgroundService"/>
     </application>
 
 </manifest>

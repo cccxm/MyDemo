@@ -3,6 +3,7 @@ package github.cccxm.mydemo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import github.cccxm.mydemo.android.data.net.NetRequestActivity
 import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
 import github.cccxm.mydemo.android.extension.mapbox.MapBoxActivity
@@ -48,7 +49,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("FlowLayout") { startActivity<FlowListActivity>() }
                     }
                     group("数据操作") {
-                        item("网络请求")
+                        item("网络请求") { startActivity<NetRequestActivity>() }
                         item("数据库")
                         item("联系人")
                     }
