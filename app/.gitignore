@@ -5,3 +5,5 @@
 /gradle
 gradlew
 *.bat
+/idea
+/.idea
