@@ -26,22 +26,19 @@ private class StaticTagUI : AnkoComponent<StaticTagActivity> {
     private lateinit var mToolbar: Toolbar
     override fun createView(ui: AnkoContext<StaticTagActivity>): View = with(ui) {
         linearLayout {
-            lparams(matchParent, matchParent) {
-                orientation = LinearLayout.VERTICAL
-            }
+            lparams(matchParent, matchParent)
+            orientation = LinearLayout.VERTICAL
             appBarLayout(R.style.AppTheme_AppBarOverlay) {
-                lparams(matchParent, dimen(R.dimen.tool_bar_height))
-                mToolbar = toolbar(R.style.AppTheme_PopupOverlay) {
-                    lparams(matchParent, matchParent)
-                }
-            }
+                toolbar(R.style.AppTheme_PopupOverlay) {
+                    mToolbar = this
+                }.lparams(matchParent, matchParent)
+            }.lparams(matchParent, dimen(R.dimen.tool_bar_height))
             tagFlowLayout {
-                lparams(matchParent, matchParent)
                 simpleStringAdapter {
                     for (i in 0..30)
                         tag("TAG$i")
                 }
-            }
+            }.lparams(matchParent, matchParent)
         }
     }
 
