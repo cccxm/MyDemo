@@ -5,19 +5,25 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import github.cccxm.mydemo.utils.logger
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by cxm
  * on 2017/3/27.
  */
 class BackgroundService : Service(), ServiceDownloadContract.Model {
-    private var listener: ((Int) -> Unit)? = null
+    private var onNext: ((Int) -> Unit)? = null
+    /*
+    记录当前位置防止再次打开页面时显示0进度
+     */
     private var curProgress = 0
+    /*
+    是否正在下载，用来当作是否关闭Service的参考
+     */
+    private var isDownloading = false
 
     override fun onCreate() {
         logger("onCreate")
@@ -29,39 +35,39 @@ class BackgroundService : Service(), ServiceDownloadContract.Model {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    override fun onRebind(intent: Intent?) {
-        logger("onRebind")
-        super.onRebind(intent)
-    }
-
     override fun onBind(intent: Intent?): IBinder {
         logger("onBind")
         return Binder()
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        logger("onUnbind")
-        return super.onUnbind(intent)
     }
 
     override fun onDestroy() {
         logger("onDestroy")
     }
 
-    override fun setProgressListener(listener: (Int) -> Unit) {
-        this.listener = listener
-        listener(curProgress)
+    override fun onProgress(onNext: (Int) -> Unit) {
+        this.onNext = onNext
+    }
+
+    override fun removeListener() {
+        onNext = null
+        close()
     }
 
     override fun download(url: String) {
-        doAsync {
-            for (i in 0..100) {
-                curProgress = i
-                uiThread {
-                    listener?.invoke(i)
-                }
-                Thread.sleep(100)
-            }
-        }
+        isDownloading = true
+        Observable.intervalRange(0, 100, 0, 200, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    curProgress = it.toInt()
+                    onNext?.invoke(curProgress)
+                }, {}, {
+                    isDownloading = false
+                    close()
+                })
+    }
+
+    private fun close() {
+        if (!isDownloading && onNext == null)
+            stopSelf()
     }
 }

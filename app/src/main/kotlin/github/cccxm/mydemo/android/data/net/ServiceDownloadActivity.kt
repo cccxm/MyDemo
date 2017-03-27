@@ -30,9 +30,9 @@ interface ServiceDownloadContract {
     }
 
     interface Model {
-        fun setProgressListener(listener: (Int) -> Unit)
-
+        fun onProgress(onNext: (Int) -> Unit)
         fun download(url: String)
+        fun removeListener()
     }
 }
 
@@ -51,11 +51,12 @@ class ServiceDownloadActivity : AppCompatActivity(), ServiceDownloadContract.Pre
         this.model = model
         setContentView(ui.setContentView(this))
         ui.initAppBar(this)
-        model.setProgressListener(ui::setProgress)
+        model.onProgress(ui::setProgress)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        model.removeListener()
         EventBus.getDefault().unregister(this)
     }
 

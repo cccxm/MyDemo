@@ -19,7 +19,7 @@ class NetRequestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(ui.setContentView(this))
         val actionBar = supportActionBar ?: return
-        actionBar.title = "linkage"
+        actionBar.title = "网络请求"
         actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
