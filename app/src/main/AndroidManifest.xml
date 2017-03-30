@@ -51,8 +51,14 @@
         <activity
             android:name=".android.data.net.ServiceDownloadActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".android.layout.recycler.RecyclerListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".android.adapter.screen.ScreenAdapterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".android.data.net.BackgroundService"/>
+        <service android:name=".android.data.net.BackgroundService" />
     </application>
 
 </manifest>

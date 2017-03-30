@@ -3,11 +3,13 @@ package github.cccxm.mydemo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import github.cccxm.mydemo.android.adapter.screen.ScreenAdapterActivity
 import github.cccxm.mydemo.android.data.net.NetRequestActivity
 import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
 import github.cccxm.mydemo.android.extension.mapbox.MapBoxActivity
 import github.cccxm.mydemo.android.layout.flow.FlowListActivity
+import github.cccxm.mydemo.android.layout.recycler.RecyclerListActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
 import github.cccxm.mydemo.utils.group
@@ -47,6 +49,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                     }
                     group("Layout") {
                         item("FlowLayout") { startActivity<FlowListActivity>() }
+                        item("RecyclerView") { startActivity<RecyclerListActivity>() }
                     }
                     group("数据操作") {
                         item("网络请求") { startActivity<NetRequestActivity>() }
@@ -67,6 +70,10 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("打开浏览器")
                         item("系统分享")
                         item("发送邮件")
+                    }
+                    group("适配") {
+                        item("屏幕适配") { startActivity<ScreenAdapterActivity>() }
+                        item("系统适配") {}
                     }
                     group("我的扩展") {
                         item("MapBox") { startActivity<MapBoxActivity>() }
