@@ -208,23 +208,11 @@ private abstract class AbsRecyclerGroupAdapter<CT, PT, CH : RecyclerView.ViewHol
     abstract fun onBindChildHolder(holder: CH, item: CT)
 }
 
-class RecyclerGroupDataBean(var data: MutableList<RecyclerGroupParentBean>? = null) {
-    override fun toString(): String {
-        return "RecyclerGroupDataBean(data=$data)"
-    }
-}
+class RecyclerGroupDataBean(var data: MutableList<RecyclerGroupParentBean>? = null)
 
-class RecyclerGroupParentBean(var type: String? = null, var values: List<RecyclerGroupChildBean>? = null) {
-    override fun toString(): String {
-        return "RecyclerGroupParentBean(type=$type, values=$values)"
-    }
-}
+class RecyclerGroupParentBean(var type: String? = null, var values: List<RecyclerGroupChildBean>? = null)
 
-class RecyclerGroupChildBean(var id: String? = null, var name: String? = null, var value: String? = null) {
-    override fun toString(): String {
-        return "RecyclerGroupChildBean(id=$id, name=$name, value=$value)"
-    }
-}
+class RecyclerGroupChildBean(var id: String? = null, var name: String? = null, var value: String? = null)
 
 private val RecyclerGroupJsonData = """
  {"data":[{"type":"\u57fa\u672c\u4fe1\u606f","values":[{"id":"60","name":"ABS","value":"\u6807\u914d"},
