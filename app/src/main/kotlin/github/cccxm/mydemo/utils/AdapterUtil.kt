@@ -165,7 +165,7 @@ private fun getView(context: Context, convertView: View?): TextView {
     }) as TextView
 }
 
-abstract class SimpleViewHolder<T>(val view: View) : RecyclerView.ViewHolder(view) {
+abstract class SimpleViewHolder<in T>(val view: View) : RecyclerView.ViewHolder(view) {
     abstract fun parse(item: T)
 }
 

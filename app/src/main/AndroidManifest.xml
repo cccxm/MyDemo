@@ -60,6 +60,9 @@
         <activity
             android:name=".android.adapter.screen.ViewPartFullScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".android.layout.recycler.RecyclerGroupActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".android.data.net.BackgroundService" />
     </application>
