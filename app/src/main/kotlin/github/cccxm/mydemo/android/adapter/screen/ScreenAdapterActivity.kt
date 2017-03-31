@@ -36,13 +36,12 @@ private class ScreenAdapterUI : AnkoComponent<ScreenAdapterActivity> {
             appBarLayout(R.style.AppTheme_AppBarOverlay) {
                 toolbar(R.style.AppTheme_PopupOverlay) {
                     mToolBar = this
-                    backgroundColor = color("#77ff33")
                     title = "屏幕适配"
                 }.lparams(matchParent, dimen(R.dimen.tool_bar_height))
             }.lparams(matchParent, wrapContent)
             listView {
                 simpleStringItemAdapter {
-                    item("ScrollView指定部分占满屏幕")
+                    item("ScrollView指定部分占满屏幕") { startActivity<ViewPartFullScreenActivity>() }
                 }
             }.lparams(matchParent, matchParent)
         }
