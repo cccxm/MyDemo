@@ -65,8 +65,6 @@ private class RecyclerGroupUI : AnkoComponent<RecyclerGroupActivity> {
 private class RecyclerGroupAdapter(private val context: Context) : AbsRecyclerGroupAdapter<RecyclerGroupChildBean, RecyclerGroupParentBean, RecyclerGroupChildHolder, RecyclerGroupParentHolder>() {
     var list: MutableList<RecyclerGroupParentBean> = LinkedList()
 
-//    private var mItemClickListener: ()? = null
-
     override fun getParentCount() = list.size
 
     override fun getChildCount(parentPosition: Int) = list[parentPosition].values!!.size
