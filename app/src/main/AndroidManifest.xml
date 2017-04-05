@@ -63,6 +63,31 @@
         <activity
             android:name=".android.layout.recycler.RecyclerGroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".android.layout.im.IMLayoutActivity" />
+        <activity android:name=".android.layout.im.WeChatActivity" />
+
+        <activity
+            android:name=".android.layout.im.ChattingUnresolvedActivity"
+            android:label="@string/activity_chatting_unresolved_title"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".android.layout.im.ChattingResolvedHandleByPlaceholderActivity"
+            android:label="@string/activity_chatting_fullscreen_resolved_title"
+            android:windowSoftInputMode="adjustUnspecified" />
+
+        <activity
+            android:name=".android.layout.im.ChattingResolvedActivity"
+            android:label="@string/activity_chatting_resolved_title"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".android.layout.im.ChattingResolvedFragmentActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".android.layout.im.TranslucentActivity"
+            android:theme="@style/TranslucentFullScreenTheme" />
 
         <service android:name=".android.data.net.BackgroundService" />
     </application>

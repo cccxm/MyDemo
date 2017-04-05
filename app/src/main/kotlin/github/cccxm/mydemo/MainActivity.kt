@@ -9,6 +9,7 @@ import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
 import github.cccxm.mydemo.android.extension.mapbox.MapBoxActivity
 import github.cccxm.mydemo.android.layout.flow.FlowListActivity
+import github.cccxm.mydemo.android.layout.im.IMLayoutActivity
 import github.cccxm.mydemo.android.layout.recycler.RecyclerListActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
@@ -50,6 +51,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                     group("Layout") {
                         item("FlowLayout") { startActivity<FlowListActivity>() }
                         item("RecyclerView") { startActivity<RecyclerListActivity>() }
+                        item("IMLayout") { startActivity<IMLayoutActivity>() }
                     }
                     group("数据操作") {
                         item("网络请求") { startActivity<NetRequestActivity>() }

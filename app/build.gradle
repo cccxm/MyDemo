@@ -32,31 +32,42 @@ dependencies {
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.2@aar'){
         transitive=true
     }
-    compile "com.mapbox.mapboxsdk:mapbox-android-services:$map_box_version"
     testCompile 'junit:junit:4.12'
+
+    compile "com.mapbox.mapboxsdk:mapbox-android-services:$map_box_version"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-sdk19:$anko_version"
     compile "org.jetbrains.anko:anko-support-v4:$anko_version"
-    compile "com.android.support:support-v4:$support_version"
     compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
-    compile "com.android.support:appcompat-v7:$support_version"
     compile "org.jetbrains.anko:anko-gridlayout-v7:$anko_version"
-    compile "com.android.support:gridlayout-v7:$support_version"
     compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
-    compile "com.android.support:recyclerview-v7:$support_version"
     compile "org.jetbrains.anko:anko-cardview-v7:$anko_version"
-    compile "com.android.support:cardview-v7:$support_version"
     compile "org.jetbrains.anko:anko-sqlite:$anko_version"
     compile "org.jetbrains.anko:anko-design:$anko_version"
+
+    compile "com.android.support:support-v4:$support_version"
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:gridlayout-v7:$support_version"
+    compile "com.android.support:recyclerview-v7:$support_version"
+    compile "com.android.support:cardview-v7:$support_version"
     compile "com.android.support:design:$support_version"
+
     compile "io.reactivex.rxjava2:rxandroid:$rxjava_version"
+
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
     compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
     compile "com.google.code.gson:gson:$gson_version"
+
     compile 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.1'
+
     compile 'com.zhy:flowlayout-lib:1.0.3'
+
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    compile 'cn.dreamtobe.kpswitch:library:1.6.0'
 }
 repositories {
     mavenCentral()
