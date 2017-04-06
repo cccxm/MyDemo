@@ -6,6 +6,7 @@ import android.view.View
 import github.cccxm.mydemo.android.adapter.screen.ScreenAdapterActivity
 import github.cccxm.mydemo.android.data.net.NetRequestActivity
 import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
+import github.cccxm.mydemo.android.effect.drag.DragListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
 import github.cccxm.mydemo.android.extension.mapbox.MapBoxActivity
 import github.cccxm.mydemo.android.layout.flow.FlowListActivity
@@ -43,6 +44,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                     group("特效") {
                         item("动画") { startActivity<AnimationListActivity>() }
                         item("联动") { startActivity<LinkageListActivity>() }
+                        item("拖动") { startActivity<DragListActivity>() }
                     }
                     group("View") {
                         item("圆形控件") { startActivity<CircleListActivity>() }
