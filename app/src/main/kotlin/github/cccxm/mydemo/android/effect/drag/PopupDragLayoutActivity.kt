@@ -90,7 +90,7 @@ class PopupDragLayoutView : RelativeLayout {
         with(view.findViewById(R.id.mRecyclerView) as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
             simpleStringAdapter {
-                for (i in 0..30) item("item $i")
+                for (i in 0..50) item("item $i")
             }
         }
         val params = LayoutParams(matchParent, mScreenHeight)
