@@ -28,11 +28,11 @@ open class _TagFlowLayout(context: Context?, attrs: AttributeSet?, defStyle: Int
             field = value
         }
 
-    fun lparams(width: Int, height: Int, init: (ViewGroup.MarginLayoutParams.() -> Unit)? = null): ViewGroup.MarginLayoutParams {
+    fun lparams(width: Int, height: Int, init: (ViewGroup.MarginLayoutParams.() -> Unit)? = null): TagFlowLayout {
         val params = ViewGroup.MarginLayoutParams(width, height)
         init?.invoke(params)
         layoutParams = params
-        return params
+        return this
     }
 }
 

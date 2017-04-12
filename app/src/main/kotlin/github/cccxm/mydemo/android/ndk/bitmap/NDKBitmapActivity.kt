@@ -1,4 +1,4 @@
-package github.cccxm.mydemo.android.effect.drag
+package github.cccxm.mydemo.android.ndk.bitmap
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,16 +10,16 @@ import org.jetbrains.anko.*
 
 /**
  * Created by cxm
- * on 2017/4/6.
+ * on 2017/4/12.
  */
-class DragListActivity : AppCompatActivity() {
-    private val ui = DragListUI()
+class NDKBitmapActivity : AppCompatActivity() {
+    private val ui = NDKBitmapUI()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ui.setContentView(this))
 
         val appBar = supportActionBar ?: return
-        appBar.title = "拖动效果列表"
+        appBar.title = "本地图片处理"
         appBar.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -34,15 +34,12 @@ class DragListActivity : AppCompatActivity() {
     }
 }
 
-private class DragListUI : AnkoComponent<DragListActivity> {
-    override fun createView(ui: AnkoContext<DragListActivity>): View = with(ui) {
+private class NDKBitmapUI : AnkoComponent<NDKBitmapActivity> {
+    override fun createView(ui: AnkoContext<NDKBitmapActivity>): View = with(ui) {
         linearLayout {
             listView {
                 simpleStringItemAdapter {
-                    item("拖动View") { startActivity<DragViewActivity>() }
-                    item("拖动回弹") { startActivity<DragReleaseBackActivity>() }
-                    item("侧边拖动")  //TODO
-                    item("弹出的可拖动布局") { startActivity<PopupDragLayoutActivity>() }
+                    item("图片蓝移") { startActivity<BitmapBlueMoveActivity>() }
                 }
             }.lparams(matchParent, matchParent)
         }

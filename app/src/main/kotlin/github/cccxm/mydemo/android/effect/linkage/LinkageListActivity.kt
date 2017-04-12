@@ -23,7 +23,7 @@ class LinkageListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onBackPressed()
             }
         }
         return true
@@ -40,6 +40,7 @@ private class LinkageListUI : AnkoComponent<LinkageListActivity> {
                     item("ScrollingActivity") { startActivity<ScrollingActivity>() }
                     item("RecyclerView联动ActionBar") { startActivity<ListPushBarActivity>() }
                     item("RecyclerView顶开ActionBar") { startActivity<ListHideBarActivity>() }
+                    item("弹出的可拖拽窗口") { startActivity<PopupViewActivity>() }
                 }
             }
         }

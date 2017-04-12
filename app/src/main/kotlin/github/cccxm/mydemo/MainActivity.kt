@@ -13,6 +13,7 @@ import github.cccxm.mydemo.android.layout.flow.FlowListActivity
 import github.cccxm.mydemo.android.layout.im.IMLayoutActivity
 import github.cccxm.mydemo.android.layout.recycler.RecyclerListActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
+import github.cccxm.mydemo.android.ndk.bitmap.NDKBitmapActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
 import github.cccxm.mydemo.utils.group
 import github.cccxm.mydemo.utils.item
@@ -67,6 +68,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                     }
                     group("NDK") {
                         item("OpenGL ES")
+                        item("图片处理") { startActivity<NDKBitmapActivity>() }
                     }
                     group("系统组件") {
                         item("打电话")
