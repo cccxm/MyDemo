@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jakewharton.hugo'
 
 android {
     compileSdkVersion 25
@@ -22,6 +23,10 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    lintOptions {
+        quiet true
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -29,8 +34,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.2@aar'){
-        transitive=true
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.2@aar') {
+        transitive = true
     }
     testCompile 'junit:junit:4.12'
 
@@ -60,15 +65,13 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
     compile "com.google.code.gson:gson:$gson_version"
-
     compile 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.1'
-
     compile 'com.zhy:flowlayout-lib:1.0.3'
-
     compile 'org.greenrobot:eventbus:3.0.0'
-
     compile 'cn.dreamtobe.kpswitch:library:1.6.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }
+
 repositories {
     mavenCentral()
 }

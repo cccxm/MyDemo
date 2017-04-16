@@ -26,9 +26,9 @@
         <activity android:name=".android.view.circle.CircleListActivity" />
         <activity android:name=".android.view.circle.CardViewCircleActivity" />
         <activity android:name=".android.effect.animation.AnimationListActivity" />
+        <activity android:name=".android.effect.linkage.LinkageListActivity" />
         <activity android:name=".android.material.bar.AppBarListActivity" />
         <activity android:name=".android.material.bar.AppBarSimpleActivity" />
-        <activity android:name=".android.effect.linkage.LinkageListActivity" />
         <activity
             android:name=".android.effect.linkage.ListPushBarActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
@@ -88,6 +88,7 @@
         <activity android:name=".android.effect.drag.DragReleaseBackActivity" />
         <activity android:name=".android.effect.drag.PopupDragLayoutActivity" />
         <activity android:name=".android.effect.linkage.PopupViewActivity" />
+        <activity android:name=".android.data.sp.SpActivity" />
         <activity android:name=".android.ndk.bitmap.NDKBitmapActivity" />
         <activity android:name=".android.ndk.bitmap.BitmapBlueMoveActivity" />
 

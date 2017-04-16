@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
+import github.cccxm.mydemo.android.effect.drag.tantan.TanTanDragActivity
 import github.cccxm.mydemo.utils.item
 import github.cccxm.mydemo.utils.simpleStringItemAdapter
 import org.jetbrains.anko.*
@@ -43,6 +44,7 @@ private class DragListUI : AnkoComponent<DragListActivity> {
                     item("拖动回弹") { startActivity<DragReleaseBackActivity>() }
                     item("侧边拖动")  //TODO
                     item("弹出的可拖动布局") { startActivity<PopupDragLayoutActivity>() }
+                    item("仿探探的个人页面拖动控件") { startActivity<TanTanDragActivity>() }
                 }
             }.lparams(matchParent, matchParent)
         }

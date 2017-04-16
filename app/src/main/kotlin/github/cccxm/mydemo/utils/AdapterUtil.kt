@@ -267,3 +267,29 @@ fun getTextView(context: Context): TextView {
         this
     }
 }
+
+abstract class CommonAdapter<T, VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
+    private val items: MutableList<T> = LinkedList()
+
+    fun setItems(items: List<T>) {
+        if (this.items != items) {
+            this.items.clear()
+            this.items.addAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun getItems(): MutableList<T> = items
+
+    fun addItems(items: List<T>) {
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun addItem(item: T) {
+        this.items.add(item)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = items.size
+}
