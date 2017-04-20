@@ -29,8 +29,7 @@ class RateImageActivity : AppCompatActivity() {
             R.drawable.demo_hy_5,
             R.drawable.demo_hy_6,
             R.drawable.demo_hy_7,
-            R.drawable.demo_hy_8,
-            R.drawable.demo_hy_9)
+            R.drawable.demo_hy_8,)
 
     private lateinit var images: List<MultipartImageView.Image>
 
