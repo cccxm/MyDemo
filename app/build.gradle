@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.jakewharton.hugo'
 
 android {
     compileSdkVersion 25
@@ -23,10 +22,6 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-    lintOptions {
-        quiet true
-        abortOnError false
-    }
 }
 
 dependencies {
@@ -38,6 +33,10 @@ dependencies {
         transitive = true
     }
     testCompile 'junit:junit:4.12'
+
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
 
     compile "com.mapbox.mapboxsdk:mapbox-android-services:$map_box_version"
 

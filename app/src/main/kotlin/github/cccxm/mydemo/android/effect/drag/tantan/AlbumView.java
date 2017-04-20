@@ -33,7 +33,6 @@
 // * 模仿探探 相册View
 // */
 //public class AlbumView extends ViewGroup implements OnTouchListener {
-//
 //    private RecyclerView.Adapter mAdapter;
 //
 //    /**

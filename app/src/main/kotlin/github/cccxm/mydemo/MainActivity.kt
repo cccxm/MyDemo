@@ -3,6 +3,7 @@ package github.cccxm.mydemo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.squareup.leakcanary.LeakCanary
 import github.cccxm.mydemo.android.adapter.screen.ScreenAdapterActivity
 import github.cccxm.mydemo.android.data.net.NetRequestActivity
 import github.cccxm.mydemo.android.data.sp.SpActivity
@@ -16,11 +17,10 @@ import github.cccxm.mydemo.android.layout.recycler.RecyclerListActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
 import github.cccxm.mydemo.android.ndk.bitmap.NDKBitmapActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
-import github.cccxm.mydemo.utils.SpUtil
+import github.cccxm.mydemo.android.view.image.ImageListActivity
 import github.cccxm.mydemo.utils.group
 import github.cccxm.mydemo.utils.item
 import github.cccxm.mydemo.utils.simpleStringGroupAdapter
-import hugo.weaving.internal.Hugo
 import org.jetbrains.anko.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,9 +29,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SpUtil.context = this.applicationContext
         setContentView(ui.setContentView(this))
         title = "Android"
+
+        if (!LeakCanary.isInAnalyzerProcess(this)) { //打包上线前应该注释
+            LeakCanary.install(application)
+        }
     }
 }
 
@@ -53,6 +56,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                     }
                     group("View") {
                         item("圆形控件") { startActivity<CircleListActivity>() }
+                        item("图片显示") { startActivity<ImageListActivity>() }
                         item("对话框")
                     }
                     group("Layout") {
