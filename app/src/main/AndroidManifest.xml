@@ -87,6 +87,7 @@
         <activity android:name=".android.effect.drag.DragViewActivity" />
         <activity android:name=".android.effect.drag.DragReleaseBackActivity" />
         <activity android:name=".android.effect.drag.PopupDragLayoutActivity" />
+        <activity android:name=".android.effect.drag.tantan.TanTanDragActivity" />
         <activity android:name=".android.effect.linkage.PopupViewActivity" />
         <activity android:name=".android.data.sp.SpActivity" />
         <activity android:name=".android.ndk.bitmap.NDKBitmapActivity" />

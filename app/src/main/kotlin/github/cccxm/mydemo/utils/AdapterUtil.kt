@@ -1,5 +1,6 @@
 package github.cccxm.mydemo.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
@@ -292,4 +293,53 @@ abstract class CommonAdapter<T, VH : RecyclerView.ViewHolder> : RecyclerView.Ada
     }
 
     override fun getItemCount() = items.size
+}
+
+abstract class CommonItemAdapter<Data, Holder : RecyclerView.ViewHolder> : RecyclerView.Adapter<Holder>() {
+    private val items = ArrayList<Data>()
+
+    fun addItem(item: Data) {
+        items.add(item)
+        notifyDataSetChanged()
+    }
+
+    fun addItems(items: List<Data>) {
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun setItems(items: List<Data>) {
+        this.items.clear()
+        addItems(items)
+    }
+
+    fun clear() {
+        this.items.clear()
+        notifyDataSetChanged()
+    }
+
+    fun getItems(): List<Data> {
+        return items
+    }
+
+    protected var position = 0
+        private set
+
+    protected val isStart: Boolean
+        get() = position == 0
+
+    protected val isLast: Boolean
+        get() = position == items.size - 1
+
+    override fun onBindViewHolder(holder: Holder, @SuppressLint("RecyclerView") position: Int) {
+        this.position = position
+        onBindView(holder, items[position])
+        this.position = 0
+    }
+
+    override fun getItemCount(): Int {
+        return items.size
+    }
+
+    abstract fun onBindView(holder: Holder, item: Data)
 }
