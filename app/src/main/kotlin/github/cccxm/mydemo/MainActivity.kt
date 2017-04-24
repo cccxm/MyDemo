@@ -17,6 +17,7 @@ import github.cccxm.mydemo.android.layout.recycler.RecyclerListActivity
 import github.cccxm.mydemo.android.material.bar.AppBarListActivity
 import github.cccxm.mydemo.android.ndk.bitmap.NDKBitmapActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
+import github.cccxm.mydemo.android.view.feature.ViewFeatureActivity
 import github.cccxm.mydemo.android.view.image.ImageListActivity
 import github.cccxm.mydemo.utils.group
 import github.cccxm.mydemo.utils.item
@@ -55,6 +56,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("拖动") { startActivity<DragListActivity>() }
                     }
                     group("View") {
+                        item("特性") { startActivity<ViewFeatureActivity>() }
                         item("圆形控件") { startActivity<CircleListActivity>() }
                         item("图片显示") { startActivity<ImageListActivity>() }
                         item("对话框")

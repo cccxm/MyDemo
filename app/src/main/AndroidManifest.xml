@@ -92,6 +92,7 @@
         <activity android:name=".android.data.sp.SpActivity" />
         <activity android:name=".android.ndk.bitmap.NDKBitmapActivity" />
         <activity android:name=".android.ndk.bitmap.BitmapBlueMoveActivity" />
+        <activity android:name=".android.view.feature.ViewFeatureActivity" />
         <activity android:name=".android.view.image.ImageListActivity" />
         <activity android:name=".android.view.image.RateImageActivity" />
 
