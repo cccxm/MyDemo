@@ -8,6 +8,9 @@ import kotlin.reflect.KProperty
 
 private val `SpUtil$$mCache` = HashMap<Any, SharedPreferences>()
 
+/**
+ * 用于映射SharedPreferences文件的对象
+ */
 object SpUtil {
 
     /**
@@ -49,12 +52,42 @@ object SpInt {
 }
 
 /**
+ * Int 类型的映射委托
+ */
+class SpDefaultInt(private val default: Int) {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): Int {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        return preferences.getInt(property.name, default)
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: Int) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        preferences.edit().putInt(property.name, value).apply()
+    }
+}
+
+/**
  * Boolean 类型的映射委托
  */
 object SpBoolean {
     operator fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
         val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
         return preferences.getBoolean(property.name, false)
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        preferences.edit().putBoolean(property.name, value).apply()
+    }
+}
+
+/**
+ * Boolean 类型的映射委托
+ */
+class SpDefaultBoolean(private val default: Boolean) {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        return preferences.getBoolean(property.name, default)
     }
 
     operator fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
@@ -79,12 +112,42 @@ object SpFloat {
 }
 
 /**
+ * Float 类型的映射委托
+ */
+class SpDefaultFloat(private val default: Float) {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): Float {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        return preferences.getFloat(property.name, default)
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: Float) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        preferences.edit().putFloat(property.name, value).apply()
+    }
+}
+
+/**
  * Long 类型的映射委托
  */
 object SpLong {
     operator fun getValue(thisRef: Any, property: KProperty<*>): Long {
         val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
         return preferences.getLong(property.name, 0L)
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: Long) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        preferences.edit().putLong(property.name, value).apply()
+    }
+}
+
+/**
+ * Long 类型的映射委托
+ */
+class SpDefaultLong(private val default: Long) {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): Long {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        return preferences.getLong(property.name, default)
     }
 
     operator fun setValue(thisRef: Any, property: KProperty<*>, value: Long) {
@@ -109,12 +172,42 @@ object SpString {
 }
 
 /**
+ * String 类型的映射委托
+ */
+class SpDefaultString(private val default: String) {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): String {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        return preferences.getString(property.name, default)
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        preferences.edit().putString(property.name, value).apply()
+    }
+}
+
+/**
  * StringSet 类型的映射委托
  */
 object SpStringSet {
     operator fun getValue(thisRef: Any, property: KProperty<*>): Set<String> {
         val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
         return preferences.getStringSet(property.name, HashSet<String>())
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: Set<String>) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        preferences.edit().putStringSet(property.name, value).apply()
+    }
+}
+
+/**
+ * StringSet 类型的映射委托
+ */
+class SpDefaultStringSet(private val default: Set<String>) {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): Set<String> {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        return preferences.getStringSet(property.name, default)
     }
 
     operator fun setValue(thisRef: Any, property: KProperty<*>, value: Set<String>) {
