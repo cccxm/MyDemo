@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
 import java.io.*
+import java.util.concurrent.Executors
 import kotlin.reflect.KProperty
 
 private val `SpUtil$$mCache` = HashMap<Any, SharedPreferences>()
@@ -218,11 +219,64 @@ class SpDefaultStringSet(private val default: Set<String>) {
 
 /**
  * Serializable 类型的映射委托
+ */
+@Suppress("UNCHECKED_CAST")
+class SpSerializable<T : Serializable> {
+    operator fun getValue(thisRef: Any, property: KProperty<*>): T? {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        val string = preferences.getString(property.name, null) ?: return null
+        var objectBuffer: ObjectInputStream? = null
+        try {
+            val bytes = Base64.decode(string, Base64.DEFAULT)
+            val buffer = ByteArrayInputStream(bytes)
+            objectBuffer = ObjectInputStream(buffer)
+            val readObject = objectBuffer.readObject()
+            return readObject as T
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (objectBuffer != null)
+                try {
+                    objectBuffer.close()
+                } catch (e: Exception) {
+                }
+        }
+        return null
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        if (value == null) {
+            preferences.edit().putString(property.name, null).apply()
+            return
+        }
+        var objectBuffer: ObjectOutputStream? = null
+        try {
+            val buffer = ByteArrayOutputStream()
+            objectBuffer = ObjectOutputStream(buffer)
+            objectBuffer.writeObject(value)
+            val bytes = buffer.toByteArray()
+            val code = Base64.encode(bytes, Base64.DEFAULT)
+            preferences.edit().putString(property.name, String(code)).apply()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (objectBuffer != null)
+                try {
+                    objectBuffer.close()
+                } catch (e: Exception) {
+                }
+        }
+    }
+}
+
+/**
+ * Serializable 类型的映射委托
  *
  * 使用该委托对象时，需要传入一个默认值
  */
 @Suppress("UNCHECKED_CAST")
-class SpSerializable<T : Serializable>(private val default: T) {
+class SpDefaultSerializable<T : Serializable>(private val default: T) {
     operator fun getValue(thisRef: Any, property: KProperty<*>): T {
         val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
         val string = preferences.getString(property.name, null) ?: return default
@@ -264,5 +318,63 @@ class SpSerializable<T : Serializable>(private val default: T) {
                 } catch (e: Exception) {
                 }
         }
+    }
+}
+
+/**
+ * Serializable 异步类型的映射委托
+ *
+ * 其类型必须为可空，建议对于非基本数据类型或[String]和[Set]以外的对象使用此委托，能够提高系统运行效率
+ */
+@Suppress("UNCHECKED_CAST")
+class SpAsyncSerializable<T : Serializable> {
+    private var field: T? = null
+    private var isFirst = true
+    private val service = Executors.newSingleThreadExecutor()
+
+    operator fun getValue(thisRef: Any, property: KProperty<*>): T? {
+        if (isFirst && field == null) {
+            val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+            val string = preferences.getString(property.name, null)
+            if (string != null) {
+                var objectBuffer: ObjectInputStream? = null
+                try {
+                    val bytes = Base64.decode(string, Base64.DEFAULT)
+                    val buffer = ByteArrayInputStream(bytes)
+                    objectBuffer = ObjectInputStream(buffer)
+                    val readObject = objectBuffer.readObject()
+                    field = readObject as T
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    objectBuffer.safeClose()
+                }
+            }
+        }
+        isFirst = false
+        return field
+    }
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+        val preferences = `SpUtil$$mCache`[thisRef] ?: throw RuntimeException("this object do not register")
+        field = value
+        if (value == null) {
+            preferences.edit().putString(property.name, null).apply()
+        } else
+            service.execute {
+                var objectBuffer: ObjectOutputStream? = null
+                try {
+                    val buffer = ByteArrayOutputStream()
+                    objectBuffer = ObjectOutputStream(buffer)
+                    objectBuffer.writeObject(value)
+                    val bytes = buffer.toByteArray()
+                    val code = Base64.encode(bytes, Base64.DEFAULT)
+                    preferences.edit().putString(property.name, String(code)).apply()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    objectBuffer.safeClose()
+                }
+            }
     }
 }

@@ -5,10 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import github.cccxm.mydemo.utils.SpSerializable
-import github.cccxm.mydemo.utils.SpString
-import github.cccxm.mydemo.utils.SpUtil
-import github.cccxm.mydemo.utils.logger
+import github.cccxm.mydemo.utils.*
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.*
 import java.util.*
 
@@ -28,7 +26,26 @@ class SpActivity : AppCompatActivity() {
         val user = SpUtil.register(this, SpUserBean())
         mUserModel = user
         ui.setName(user.userName)
-        logger(user.time)
+
+        Schedulers.newThread().createWorker().schedule {
+            //使用非异步的存储方式的时间计算 约 400 毫秒
+            val start = System.currentTimeMillis()
+            (0 until 1000).forEach {
+                user.time
+                user.time = Date()
+            }
+            logger("非异步的运行时间 ${System.currentTimeMillis() - start} 最终结果：${user.time}")
+        }
+
+        Schedulers.newThread().createWorker().schedule {
+            //使用异步的存储方式的时间计算 约 40 毫秒
+            val start = System.currentTimeMillis()
+            (0 until 1000).forEach {
+                user.asyncTime
+                user.asyncTime = Date()
+            }
+            logger("异步的运行时间 ${System.currentTimeMillis() - start} 最终结果：${user.asyncTime}")
+        }
 
         val appBar = supportActionBar ?: return
         appBar.title = "SP文件"
@@ -65,7 +82,8 @@ class SpActivity : AppCompatActivity() {
 
 private class SpUserBean {
     var userName: String by SpString
-    var time: Date by SpSerializable(Date())
+    var time: Date by SpDefaultSerializable(Date())
+    var asyncTime: Date? by SpAsyncSerializable<Date>()
 }
 
 private class SpUI : AnkoComponent<SpActivity> {
