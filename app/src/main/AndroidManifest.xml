@@ -89,6 +89,7 @@
         <activity android:name=".android.effect.drag.PopupDragLayoutActivity" />
         <activity android:name=".android.effect.drag.tantan.TanTanDragActivity" />
         <activity android:name=".android.effect.linkage.PopupViewActivity" />
+        <activity android:name=".android.effect.linkage.CoorDemoActivity" />
         <activity android:name=".android.data.sp.SpActivity" />
         <activity android:name=".android.ndk.bitmap.NDKBitmapActivity" />
         <activity android:name=".android.ndk.bitmap.BitmapBlueMoveActivity" />

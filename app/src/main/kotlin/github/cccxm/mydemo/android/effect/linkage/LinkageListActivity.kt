@@ -41,6 +41,7 @@ private class LinkageListUI : AnkoComponent<LinkageListActivity> {
                     item("RecyclerView联动ActionBar") { startActivity<ListPushBarActivity>() }
                     item("RecyclerView顶开ActionBar") { startActivity<ListHideBarActivity>() }
                     item("弹出的可拖拽窗口") { startActivity<PopupViewActivity>() }
+                    item("一个View影响另一个View") { startActivity<CoorDemoActivity>() }
                 }
             }
         }
