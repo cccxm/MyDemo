@@ -1,10 +1,10 @@
 package github.cccxm.mydemo
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.squareup.leakcanary.LeakCanary
 import github.cccxm.mydemo.android.adapter.screen.ScreenAdapterActivity
+import github.cccxm.mydemo.android.data.app.SaveInstanceActivity
 import github.cccxm.mydemo.android.data.net.NetRequestActivity
 import github.cccxm.mydemo.android.data.sp.SpActivity
 import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
@@ -19,13 +19,13 @@ import github.cccxm.mydemo.android.ndk.bitmap.NDKBitmapActivity
 import github.cccxm.mydemo.android.view.circle.CircleListActivity
 import github.cccxm.mydemo.android.view.feature.ViewFeatureActivity
 import github.cccxm.mydemo.android.view.image.ImageListActivity
+import github.cccxm.mydemo.utils.BaseActivity
 import github.cccxm.mydemo.utils.group
 import github.cccxm.mydemo.utils.item
 import github.cccxm.mydemo.utils.simpleStringGroupAdapter
 import org.jetbrains.anko.*
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : BaseActivity() {
     private val ui = MainUI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +67,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("IMLayout") { startActivity<IMLayoutActivity>() }
                     }
                     group("数据操作") {
+                        item("Activity数据保存") { startActivity<SaveInstanceActivity>() }
                         item("SharedPreferences") { startActivity<SpActivity>() }
                         item("网络请求") { startActivity<NetRequestActivity>() }
                         item("数据库")

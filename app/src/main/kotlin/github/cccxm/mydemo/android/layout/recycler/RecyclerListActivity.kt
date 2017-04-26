@@ -43,6 +43,7 @@ private class RecyclerListUI : AnkoComponent<RecyclerListActivity> {
             listView {
                 simpleStringItemAdapter {
                     item("实现数据分组") { startActivity<RecyclerGroupActivity>() }
+                    item("DiffUtil") {}
                 }
             }.lparams(matchParent, matchParent)
         }
