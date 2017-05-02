@@ -63,6 +63,7 @@
         <activity
             android:name=".android.layout.recycler.RecyclerGroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".android.layout.recycler.RecyclerRefreshViewActivity" />
         <activity android:name=".android.layout.im.IMLayoutActivity" />
         <activity android:name=".android.layout.im.WeChatActivity" />
         <activity
