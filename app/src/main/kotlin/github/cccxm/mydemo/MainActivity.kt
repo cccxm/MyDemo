@@ -11,6 +11,7 @@ import github.cccxm.mydemo.android.effect.animation.AnimationListActivity
 import github.cccxm.mydemo.android.effect.drag.DragListActivity
 import github.cccxm.mydemo.android.effect.linkage.LinkageListActivity
 import github.cccxm.mydemo.android.extension.mapbox.MapBoxActivity
+import github.cccxm.mydemo.android.layout.barrage.BarrageListActivity
 import github.cccxm.mydemo.android.layout.flow.FlowListActivity
 import github.cccxm.mydemo.android.layout.im.IMLayoutActivity
 import github.cccxm.mydemo.android.layout.recycler.RecyclerListActivity
@@ -65,6 +66,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("FlowLayout") { startActivity<FlowListActivity>() }
                         item("RecyclerView") { startActivity<RecyclerListActivity>() }
                         item("IMLayout") { startActivity<IMLayoutActivity>() }
+                        item("弹幕实现") { startActivity<BarrageListActivity>() }
                     }
                     group("数据操作") {
                         item("Activity数据保存") { startActivity<SaveInstanceActivity>() }
