@@ -1,7 +1,7 @@
-package com.github.cccxm.condition.api
+package github.cccxm.condition.api
 
-import com.github.cccxm.condition.annotation.Condition
-import com.github.cccxm.condition.annotation.Conditions
+import github.cccxm.condition.annotation.Condition
+import github.cccxm.condition.annotation.Conditions
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
