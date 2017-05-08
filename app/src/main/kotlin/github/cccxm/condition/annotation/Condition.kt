@@ -1,4 +1,4 @@
-package com.github.cccxm.condition.annotation
+package github.cccxm.condition.annotation
 
 /**
  *  Copyright (C) <2017>  <陈小默>
