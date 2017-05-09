@@ -55,7 +55,7 @@ private class ConditionHandler(clazz: Class<*>, private val target: () -> Unit) 
             var res = true
             if (args != null && args.size == 1) {
                 val any = args[0]
-                res = if (any is Boolean) any else true
+                res = any as? Boolean ?: true
             }
             mConditionMap[method]?.value = res
             if (getCondition(mConditionMap.values)) {
