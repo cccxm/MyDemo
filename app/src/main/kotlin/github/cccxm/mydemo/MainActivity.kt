@@ -66,7 +66,6 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("FlowLayout") { startActivity<FlowListActivity>() }
                         item("RecyclerView") { startActivity<RecyclerListActivity>() }
                         item("IMLayout") { startActivity<IMLayoutActivity>() }
-                        item("弹幕实现") { startActivity<BarrageListActivity>() }
                     }
                     group("数据操作") {
                         item("Activity数据保存") { startActivity<SaveInstanceActivity>() }
@@ -97,6 +96,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                     }
                     group("我的扩展") {
                         item("MapBox") { startActivity<MapBoxActivity>() }
+                        item("自定义弹幕") { startActivity<BarrageListActivity>() }
                         item("CrazyPlatte")
                     }
                 }

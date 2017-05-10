@@ -37,11 +37,7 @@ class BarrageListActivity : AppCompatActivity() {
 private class BarrageListUI : AnkoComponent<BarrageListActivity> {
     override fun createView(ui: AnkoContext<BarrageListActivity>): View = with(ui) {
         linearLayout {
-            listView {
-                simpleStringItemAdapter {
-                    item("普通弹幕") { startActivity<BarrageSimpleActivity>() }
-                }
-            }
+
         }
     }
 }

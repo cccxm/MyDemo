@@ -1,8 +1,8 @@
 package github.cccxm.mydemo.view
 
+
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -10,12 +10,13 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -28,13 +29,13 @@ class BarrageLayout : RelativeLayout {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     /**
-     * 发射间隔
+     * setRate()设置发射间隔，-1表示随机时间发射
      */
-    var rate = 1000L
+    var rate = 500L
     /**
-     * 一个弹幕在屏幕上停留的时间，单位ms
+     * setSpeed()设置弹幕在屏幕上停留的时间，单位ms
      */
-    var speed = 8000L
+    var speed = 10000L
         set(value) {
             if (value in 1000 until 64000) {
                 field = value
@@ -47,9 +48,9 @@ class BarrageLayout : RelativeLayout {
     private val mTempItems = LinkedList<BarrageItem>()
     private var isStart = false
     private var mSubscribe: Disposable? = null
-    private var mOrignChildCount = 0
+    private var mOrigChildCount = 0
 
-    /**
+    /*
      * 获取空闲的行数，没有时候返回-1
      */
     private fun getIndex(): Int {
@@ -57,87 +58,68 @@ class BarrageLayout : RelativeLayout {
         return mVPosition.indexOfFirst { it <= 0 }
     }
 
+    /**
+     * 向其中添加一条弹幕，该弹幕将会立即显示在屏幕上（如果有位置的话）
+     */
     fun addItem(item: BarrageItem) {
         mTempItems.add(item)
         mItems.add(item)
     }
 
+    /**
+     * 向其中添加一系列的弹幕，这些弹幕将会排在末尾，并在下次循环时显示
+     */
     fun addItems(items: List<BarrageItem>) {
         mItems.addAll(0, items)
     }
 
+    /**
+     * 调用该方法开始滚动显示弹幕，一旦调用此方法，务必在合适的位置调用[onDestroy]方法来停止弹幕播放，以免造成内存泄漏
+     */
     fun onCreate() {
-        mOrignChildCount = childCount
+        mOrigChildCount = childCount
         onDestroy()
         isStart = true
-        mSubscribe = Observable.create<BarrageIndex> { subscribe ->
-            var loop = true
-            while (loop) {
-                val items = LinkedList<BarrageItem>()
-                items.addAll(mItems)
-                items.forEach {
-                    if (!isStart) {
-                        loop = false
-                        return@forEach
-                    }
-                    var pos = getIndex()
-                    while (pos == -1) {
-                        try {
-                            Thread.sleep(buildTime())
-                            pos = getIndex()
-                        } catch (e: InterruptedException) {
-                            loop = false
-                            return@forEach
+        val items = LinkedList<BarrageItem>()
+        mSubscribe = Observable.interval(rate, TimeUnit.MILLISECONDS)
+                .map {
+                    val pos = getIndex()
+                    if (pos != -1) {
+                        var item: BarrageItem? = null
+                        if (mTempItems.isNotEmpty()) { //有刚刚发送的消息
+                            item = mTempItems.remove()
+                        } else if (items.isNotEmpty()) {
+                            item = items.remove()
+                        } else { //一轮数据发射完毕
+                            val max = mVPosition.max() ?: 0 + 30//两轮数据之中间隔30个中断
+                            for (i in mVPosition.indices) mVPosition[i] = max
+                            items.addAll(mItems)
                         }
+                        if (item != null) {
+                            mVPosition[pos] = Int.MAX_VALUE
+                            BarrageIndex(item, pos)
+                        } else null
+                    } else null
+                }.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ res ->
+                    if (isStart && res != null) {
+                        val barrageView = generateBarrageView(res.item)
+                        val lot = computeLot(barrageView.findViewById(0x123) as TextView, res.item.getText())
+                        mVPosition[res.pos] = lot
+                        showBarrageItem(barrageView, res.pos)
                     }
-                    if (mTempItems.isNotEmpty()) {
-                        while (mTempItems.isNotEmpty()) {
-                            val remove = mTempItems.remove()
-                            mVPosition[pos] = (remove.getText().length / 3) + 3
-                            subscribe.onNext(BarrageIndex(remove, pos))
-                            pos = getIndex()
-                            while (pos == -1) {
-                                try {
-                                    Thread.sleep(buildTime())
-                                    pos = getIndex()
-                                } catch (e: InterruptedException) {
-                                    loop = false
-                                    return@forEach
-                                }
-                            }
-                        }
-                    }
-                    mVPosition[pos] = (it.getText().length / 3) + 3
-                    subscribe.onNext(BarrageIndex(it, pos))
-                    try {
-                        Thread.sleep(buildTime())
-                    } catch (e: InterruptedException) {
-                        loop = false
-                        return@forEach
-                    }
-                }
-                try {
-                    Thread.sleep(speed / 2)
-                    for (i in mVPosition.indices) mVPosition[i] = 0
-                } catch (e: InterruptedException) {
-                    loop = false
-                }
-            }
-            subscribe.onComplete()
-        }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ if (isStart) showBarrageItem(generateBarrageView(it.item), it.pos) }, { }, { })
+                }, { }, { })
     }
 
     private fun buildTime(): Long {
-        val r = speed / (maxLine * 5)
-        return if (rate > 0) r else (Math.random() * r).toLong() + r
+        if (rate > 0) return rate
+        val r = speed / (maxLine shl 3)
+        return (Math.random() * r).toLong() + r
     }
 
-    fun onDestroy() {
-        isStart = false
-        val sub = mSubscribe ?: return
-        if (!sub.isDisposed) sub.dispose()
+    private fun computeLot(textView: TextView, text: String): Int {
+        val length = Math.min(textView.paint.measureText(text) + dip(40), width.toFloat())
+        return ((length * speed) / (2 * width * rate)).toInt() + 1
     }
 
     private fun showBarrageItem(view: View, pos: Int) {
@@ -150,40 +132,12 @@ class BarrageLayout : RelativeLayout {
     }
 
     private fun checkChildCount() {
-        if (childCount - mOrignChildCount > 30) {
-            (mOrignChildCount until childCount).map(this::getChildAt)
+        if (childCount - mOrigChildCount > 30) {
+            (mOrigChildCount until childCount).map(this::getChildAt)
                     .forEach {
                         it.clearAnimation()
                         removeView(it)
                     }
-        }
-    }
-
-    @SuppressLint("InflateParams") private fun generateBarrageView(item: BarrageItem): View {
-        return with(context) {
-            linearLayout {
-                linearLayout {
-                    gravity = Gravity.CENTER_VERTICAL
-                    padding = dip(5)
-                    if (item.getBackgroundResource() != -1)
-                        backgroundResource = item.getBackgroundResource()
-                    else backgroundColor = item.getBackgroundColor()
-                    onClick { item.onClick() }
-                    if (item.avatarEnable()) {
-                        imageView {
-                            item.inflateAvatar(this)
-                        }.lparams(dip(20), dip(20))
-                    }
-
-                    textView(item.getText()) {
-                        maxLines = 1
-                        textColor = item.getTextColor()
-                    }.lparams(wrapContent, wrapContent) {
-                        leftMargin = dip(5)
-                        rightMargin = dip(3)
-                    }
-                }.lparams(wrapContent, wrapContent)
-            }
         }
     }
 
@@ -202,8 +156,49 @@ class BarrageLayout : RelativeLayout {
     }
 
     private data class BarrageIndex(val item: BarrageItem, val pos: Int)
+
+    /**
+     * 调用该方法销毁此View，如果没有调用此方法则可能会造成内存泄漏
+     */
+    fun onDestroy() {
+        isStart = false
+        val sub = mSubscribe ?: return
+        if (!sub.isDisposed) sub.dispose()
+    }
+
+    private fun generateBarrageView(item: BarrageItem): View {
+        return with(context) {
+            linearLayout {
+                linearLayout {
+                    gravity = Gravity.CENTER_VERTICAL
+                    padding = dip(5)
+                    if (item.getBackgroundResource() != -1)
+                        backgroundResource = item.getBackgroundResource()
+                    else backgroundColor = item.getBackgroundColor()
+                    onClick { item.onClick() }
+                    if (item.avatarEnable()) {
+                        imageView {
+                            item.inflateAvatar(this)
+                        }.lparams(dip(20), dip(20))
+                    }
+
+                    textView(item.getText()) {
+                        id = 0x123
+                        maxLines = 1
+                        textColor = item.getTextColor()
+                    }.lparams(wrapContent, wrapContent) {
+                        leftMargin = dip(5)
+                        rightMargin = dip(3)
+                    }
+                }.lparams(wrapContent, wrapContent)
+            }
+        }
+    }
 }
 
+/**
+ * 弹幕Item接口
+ */
 interface BarrageItem {
     fun getTextColor(): Int
     fun getBackgroundColor(): Int
@@ -214,6 +209,9 @@ interface BarrageItem {
     fun getText(): String
 }
 
+/**
+ * 弹幕Item的基本实现
+ */
 abstract class AbsBarrageItem : BarrageItem {
     override fun getTextColor() = Color.WHITE
     override fun getBackgroundColor() = Color.TRANSPARENT
