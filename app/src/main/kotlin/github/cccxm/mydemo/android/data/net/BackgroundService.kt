@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import github.cccxm.mydemo.utils.logger
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import org.greenrobot.eventbus.EventBus
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
 /**
@@ -55,7 +55,8 @@ class BackgroundService : Service(), ServiceDownloadContract.Model {
 
     override fun download(url: String) {
         isDownloading = true
-        Observable.intervalRange(0, 100, 0, 200, TimeUnit.MILLISECONDS)
+        Observable.interval(200, TimeUnit.MILLISECONDS)
+                .take(100)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     curProgress = it.toInt()

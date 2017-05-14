@@ -1,20 +1,22 @@
 package github.cccxm.mydemo.view
 
-
 import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import github.cccxm.mydemo.R
+import kotlinx.android.synthetic.main.item_barrage.view.*
 import org.jetbrains.anko.*
+import rx.Observable
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -29,11 +31,16 @@ class BarrageLayout : RelativeLayout {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     /**
-     * setRate()设置发射间隔，-1表示随机时间发射
+     * setRate()设置发射间隔，取值范围100-8000，单位毫秒
      */
     var rate = 500L
+        set(value) {
+            if (value in 100 until 8000) {
+                field = value
+            }
+        }
     /**
-     * setSpeed()设置弹幕在屏幕上停留的时间，单位ms
+     * setSpeed()设置弹幕在屏幕上停留的时间，取值范围1000-6400，单位ms
      */
     var speed = 10000L
         set(value) {
@@ -47,7 +54,7 @@ class BarrageLayout : RelativeLayout {
     private val mItems = LinkedList<BarrageItem>()
     private val mTempItems = LinkedList<BarrageItem>()
     private var isStart = false
-    private var mSubscribe: Disposable? = null
+    private var mSubscribe: Subscription? = null
     private var mOrigChildCount = 0
 
     /*
@@ -91,7 +98,7 @@ class BarrageLayout : RelativeLayout {
                         } else if (items.isNotEmpty()) {
                             item = items.remove()
                         } else { //一轮数据发射完毕
-                            val max = mVPosition.max() ?: 0 + 30//两轮数据之中间隔30个中断
+                            val max = mVPosition.max() ?: 0 + 10//两轮数据之中间隔10个中断
                             for (i in mVPosition.indices) mVPosition[i] = max
                             items.addAll(mItems)
                         }
@@ -104,22 +111,25 @@ class BarrageLayout : RelativeLayout {
                 .subscribe({ res ->
                     if (isStart && res != null) {
                         val barrageView = generateBarrageView(res.item)
-                        val lot = computeLot(barrageView.findViewById(0x123) as TextView, res.item.getText())
+                        val lot = computeLot(barrageView.mItemText, res.item.getText())
                         mVPosition[res.pos] = lot
                         showBarrageItem(barrageView, res.pos)
                     }
                 }, { }, { })
     }
 
-    private fun buildTime(): Long {
-        if (rate > 0) return rate
-        val r = speed / (maxLine shl 3)
-        return (Math.random() * r).toLong() + r
-    }
-
     private fun computeLot(textView: TextView, text: String): Int {
         val length = Math.min(textView.paint.measureText(text) + dip(40), width.toFloat())
         return ((length * speed) / (2 * width * rate)).toInt() + 1
+    }
+
+    /**
+     * 调用该方法销毁此View，如果没有调用此方法则可能会造成内存泄漏
+     */
+    fun onDestroy() {
+        isStart = false
+        val sub = mSubscribe ?: return
+        if (!sub.isUnsubscribed) sub.unsubscribe()
     }
 
     private fun showBarrageItem(view: View, pos: Int) {
@@ -141,6 +151,21 @@ class BarrageLayout : RelativeLayout {
         }
     }
 
+    @SuppressLint("InflateParams") private fun generateBarrageView(item: BarrageItem): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.item_barrage, null)
+        if (item.getBackgroundResource() != -1)
+            view.backgroundResource = item.getBackgroundResource()
+        else view.backgroundColor = item.getBackgroundColor()
+        view.onClick { item.onClick() }
+        if (item.avatarEnable()) {
+            view.mItemImage.visibility = View.VISIBLE
+            item.inflateAvatar(view.mItemImage)
+        } else view.mItemImage.visibility = View.GONE
+        view.mItemText.text = item.getText()
+        view.mItemText.textColor = item.getTextColor()
+        return view
+    }
+
     private fun startAnimation(view: View, start: Float, barrageWidth: Float) {
         val animator = ObjectAnimator.ofFloat(view, "translationX", start, -barrageWidth).setDuration(speed)
         animator.setInterpolator { it }
@@ -156,44 +181,6 @@ class BarrageLayout : RelativeLayout {
     }
 
     private data class BarrageIndex(val item: BarrageItem, val pos: Int)
-
-    /**
-     * 调用该方法销毁此View，如果没有调用此方法则可能会造成内存泄漏
-     */
-    fun onDestroy() {
-        isStart = false
-        val sub = mSubscribe ?: return
-        if (!sub.isDisposed) sub.dispose()
-    }
-
-    private fun generateBarrageView(item: BarrageItem): View {
-        return with(context) {
-            linearLayout {
-                linearLayout {
-                    gravity = Gravity.CENTER_VERTICAL
-                    padding = dip(5)
-                    if (item.getBackgroundResource() != -1)
-                        backgroundResource = item.getBackgroundResource()
-                    else backgroundColor = item.getBackgroundColor()
-                    onClick { item.onClick() }
-                    if (item.avatarEnable()) {
-                        imageView {
-                            item.inflateAvatar(this)
-                        }.lparams(dip(20), dip(20))
-                    }
-
-                    textView(item.getText()) {
-                        id = 0x123
-                        maxLines = 1
-                        textColor = item.getTextColor()
-                    }.lparams(wrapContent, wrapContent) {
-                        leftMargin = dip(5)
-                        rightMargin = dip(3)
-                    }
-                }.lparams(wrapContent, wrapContent)
-            }
-        }
-    }
 }
 
 /**

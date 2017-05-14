@@ -3,6 +3,7 @@ package github.cccxm.mydemo
 import android.os.Bundle
 import android.view.View
 import com.squareup.leakcanary.LeakCanary
+import com.squareup.picasso.Picasso
 import github.cccxm.mydemo.android.adapter.screen.ScreenAdapterActivity
 import github.cccxm.mydemo.android.data.app.SaveInstanceActivity
 import github.cccxm.mydemo.android.data.net.NetRequestActivity
@@ -66,6 +67,7 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("FlowLayout") { startActivity<FlowListActivity>() }
                         item("RecyclerView") { startActivity<RecyclerListActivity>() }
                         item("IMLayout") { startActivity<IMLayoutActivity>() }
+                        item("弹幕实现") { startActivity<BarrageListActivity>() }
                     }
                     group("数据操作") {
                         item("Activity数据保存") { startActivity<SaveInstanceActivity>() }

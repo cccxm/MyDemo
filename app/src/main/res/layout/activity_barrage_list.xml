@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <github.cccxm.mydemo.view.BarrageLayout
+        android:id="@+id/mBarrageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="260dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/demo_hy_5" />
+    </github.cccxm.mydemo.view.BarrageLayout>
+
+    <LinearLayout
+        android:id="@+id/mSendMsgLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#efefef"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/mBarrageEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/shape_radius_white"
+            android:gravity="center_vertical|start"
+            android:hint="评论..."
+            android:imeOptions="actionSend"
+            android:inputType="text"
+            android:maxHeight="100dp"
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="16dp"
+            android:visibility="visible"
+            tools:ignore="TextFields" />
+
+        <TextView
+            android:id="@+id/mSendBtn"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/radius_hollow_blue"
+            android:gravity="center"
+            android:text="发送" />
+
+    </LinearLayout>
+</RelativeLayout>

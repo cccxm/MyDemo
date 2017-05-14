@@ -6,8 +6,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import github.cccxm.mydemo.utils.*
-import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.*
+import rx.schedulers.Schedulers
 import java.util.*
 
 /**
