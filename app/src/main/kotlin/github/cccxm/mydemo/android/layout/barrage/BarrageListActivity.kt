@@ -22,7 +22,7 @@ class BarrageListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barrage_list)
         mBarrageLayout.onCreate() //在OnCreate中（或其他合适位置）启动弹幕
-        val initBarrageItems: List<AbsBarrageItem> = mMessageList.map {
+        val initBarrageItems = mMessageList.map {
             object : AbsBarrageItem() {
                 override fun getText(): String = it
                 override fun getBackgroundResource(): Int = R.drawable.shape_radius_alpha_black
