@@ -91,6 +91,7 @@ class BarrageLayout : RelativeLayout {
         mSubscribe = Observable.interval(rate, TimeUnit.MILLISECONDS)
                 .map {
                     val pos = getIndex()
+                    var barrage: BarrageIndex? = null
                     if (pos != -1) {
                         var item: BarrageItem? = null
                         if (mTempItems.isNotEmpty()) { //有刚刚发送的消息
@@ -104,9 +105,10 @@ class BarrageLayout : RelativeLayout {
                         }
                         if (item != null) {
                             mVPosition[pos] = Int.MAX_VALUE
-                            BarrageIndex(item, pos)
-                        } else null
-                    } else null
+                            barrage = BarrageIndex(item, pos)
+                        }
+                    }
+                    barrage
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ res ->
                     if (isStart && res != null) {
@@ -166,6 +168,10 @@ class BarrageLayout : RelativeLayout {
         return view
     }
 
+    /**
+     * @param start 动画的启动位置
+     * @param barrageWidth 弹幕布局的宽度，用来当作弹幕结束的位置
+     */
     private fun startAnimation(view: View, start: Float, barrageWidth: Float) {
         val animator = ObjectAnimator.ofFloat(view, "translationX", start, -barrageWidth).setDuration(speed)
         animator.setInterpolator { it }
