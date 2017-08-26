@@ -87,7 +87,7 @@ class PopupDragLayoutView : RelativeLayout {
         isFocusable = true
         backgroundColor = Color.TRANSPARENT
         val view = context.layoutInflater.inflate(R.layout.layout_effect_drag_popup, null)
-        with(view.findViewById(R.id.mRecyclerView) as RecyclerView) {
+        with(view.findViewById<RecyclerView>(R.id.mRecyclerView)) {
             layoutManager = LinearLayoutManager(context)
             simpleStringAdapter {
                 for (i in 0..50) item("item $i")

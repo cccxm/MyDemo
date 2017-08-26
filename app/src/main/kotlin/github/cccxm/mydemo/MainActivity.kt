@@ -96,8 +96,11 @@ private class MainUI : AnkoComponent<MainActivity> {
                         item("屏幕适配") { startActivity<ScreenAdapterActivity>() }
                         item("系统适配") {}
                     }
-                    group("我的扩展") {
+                    group("地图"){
                         item("MapBox") { startActivity<MapBoxActivity>() }
+                        item("Google"){}
+                    }
+                    group("我的扩展") {
                         item("自定义弹幕") { startActivity<BarrageListActivity>() }
                         item("CrazyPlatte")
                     }

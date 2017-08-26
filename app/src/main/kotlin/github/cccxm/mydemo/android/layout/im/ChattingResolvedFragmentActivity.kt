@@ -43,11 +43,11 @@ class ChattingResolvedFragmentActivity : FragmentActivity() {
     private var mPlusIv: ImageView? = null
 
     private fun assignViews() {
-        mContentRyv = findViewById(R.id.content_ryv) as RecyclerView
-        mSendEdt = findViewById(R.id.send_edt) as EditText
-        mPanelRoot = findViewById(R.id.panel_root) as KPSwitchPanelLinearLayout
-        mSendImgTv = findViewById(R.id.send_img_tv) as TextView
-        mPlusIv = findViewById(R.id.plus_iv) as ImageView
+        mContentRyv = findViewById<RecyclerView>(R.id.content_ryv)
+        mSendEdt = findViewById<EditText>(R.id.send_edt)
+        mPanelRoot = findViewById<KPSwitchPanelLinearLayout>(R.id.panel_root)
+        mSendImgTv = findViewById<TextView>(R.id.send_img_tv)
+        mPlusIv = findViewById<ImageView>(R.id.plus_iv)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -70,7 +70,7 @@ class ChattingResolvedFragmentActivity : FragmentActivity() {
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private fun adaptFitsSystemWindows(isTranslucentStatusFitSystemWindowTrue: Boolean) {
         if (isTranslucentStatusFitSystemWindowTrue && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            findViewById(R.id.rootView).fitsSystemWindows = true
+            findViewById<View>(R.id.rootView).fitsSystemWindows = true
         }
     }
 

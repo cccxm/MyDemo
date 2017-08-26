@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "github.cccxm.mydemo"
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,7 +32,6 @@ dependencies {
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.2@aar') {
         transitive = true
     }
-    testCompile 'junit:junit:4.12'
 
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
@@ -59,18 +58,19 @@ dependencies {
 
     compile "io.reactivex:rxandroid:$rxjava_version"
 
-    compile "com.squareup.picasso:picasso:2.5.2"
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
     compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
 
     compile "com.google.code.gson:gson:$gson_version"
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     compile 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.1'
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cn.dreamtobe.kpswitch:library:1.6.0'
     compile 'com.nineoldandroids:library:2.4.0'
+    testCompile 'junit:junit:4.12'
 }
 
 repositories {

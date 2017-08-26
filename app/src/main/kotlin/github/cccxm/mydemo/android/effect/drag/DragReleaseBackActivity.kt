@@ -91,7 +91,7 @@ private class DragReleaseBackLayout(context: Context) : RelativeLayout(context) 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
 
-        val view = findViewById(0)
+        val view = findViewById<View>(0)
         mOriginPoints.x = view.left
         mOriginPoints.y = view.top
     }

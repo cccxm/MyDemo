@@ -236,7 +236,7 @@ fun RecyclerView.simpleCardAdapter(init: _SimpleAdapter<String>.() -> Unit): _Si
             }
         }) {
             override fun parse(item: String) {
-                (view.findViewById(0x1234) as TextView).text = item
+                (view.findViewById<TextView>(0x1234)).text = item
             }
         }
     }
