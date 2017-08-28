@@ -4,14 +4,4 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <github.cccxm.mydemo.view.RefreshLayout
-        android:id="@+id/mRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </github.cccxm.mydemo.view.RefreshLayout>
 </LinearLayout>

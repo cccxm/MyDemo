@@ -1,5 +1,6 @@
 package github.cccxm.mydemo.android.data.sp
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -23,7 +24,7 @@ class SpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(ui.setContentView(this))
 
-        val user = SpUtil.register(this, SpUserBean())
+        val user = SpUserBean(this)
         mUserModel = user
         ui.setName(user.userName)
 
@@ -57,7 +58,6 @@ class SpActivity : AppCompatActivity() {
         val user = mUserModel
         if (user != null) {
             user.time = Date()
-            SpUtil.unRegister(user)
             mUserModel = null
         }
     }
@@ -69,21 +69,19 @@ class SpActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        android.R.id.home -> {
+            onBackPressed()
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 }
 
-private class SpUserBean {
-    var userName: String by SpString
-    var time: Date by SpDefaultSerializable(Date())
-    var asyncTime: Date? by SpAsyncSerializable<Date>()
+private class SpUserBean(context: Context) : BaseSharedPreferences(context) {
+    var userName by spString("")
+    var time by spSerializable(Date())
+    var asyncTime by spSerializable<Date>()
 }
 
 private class SpUI : AnkoComponent<SpActivity> {

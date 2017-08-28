@@ -103,6 +103,8 @@
         <activity android:name=".android.view.image.RateImageActivity" />
 
         <service android:name=".android.data.net.BackgroundService" />
+
+        <activity android:name=".android.layout.recycler.UserDiffUtilActivity"></activity>
     </application>
 
 </manifest>

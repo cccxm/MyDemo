@@ -70,6 +70,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cn.dreamtobe.kpswitch:library:1.6.0'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
 
