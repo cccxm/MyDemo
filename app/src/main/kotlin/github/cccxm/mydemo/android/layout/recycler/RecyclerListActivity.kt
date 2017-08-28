@@ -44,7 +44,7 @@ private class RecyclerListUI : AnkoComponent<RecyclerListActivity> {
                 simpleStringItemAdapter {
                     item("实现数据分组") { startActivity<RecyclerGroupActivity>() }
                     item("下拉刷新上拉加载") { startActivity<RecyclerRefreshViewActivity>() }
-                    item("DiffUtil") {}
+                    item("DiffUtil") { startActivity<UserDiffUtilActivity>() }
                 }
             }.lparams(matchParent, matchParent)
         }
